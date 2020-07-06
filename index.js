@@ -41,15 +41,6 @@ const getChallengesInfo = async () => {
     })
   })
 
-  await page.$$eval('div.rc-tabs-tab > span:nth-child(1)', anchors => {
-    anchors.map(anchor => {
-      if (anchor.textContent == 'Código'){
-        anchor.click();
-        return;
-      }
-    })
-  })
-
   console.log('%c⧭', 'color: #0088cc', getExcerciseInfo, allLinks[randomNumOfExercise]);
   console.log('%c⧭', 'color: #e50000', 'finished');
   await browser.close();
