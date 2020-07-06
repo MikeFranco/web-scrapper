@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 require('dotenv').config();
 
 
-const getEasyChallenges = async () => {
+const getChallengesInfo = async () => {
   const excersicesUrl = process.env.URL;
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
@@ -29,7 +29,25 @@ const getEasyChallenges = async () => {
   const getExcerciseInfo = await page.evaluate(() => {
       const title = document.querySelector('h2.content').textContent;
       const description = document.querySelectorAll('div[class="grey-segment code-area instructions"] > div')[1].innerText.split('\n').join(' ');
-      return { title, description}
+      return { title, description }
+  })
+  //To click in Code tab
+  await page.$$eval('div.rc-tabs-tab > span:nth-child(1)', anchors => {
+    anchors.map(anchor => {
+      if (anchor.textContent == 'Código' || anchor.textContent == 'Tests'){
+        anchor.click();
+        return;
+      }
+    })
+  })
+
+  await page.$$eval('div.rc-tabs-tab > span:nth-child(1)', anchors => {
+    anchors.map(anchor => {
+      if (anchor.textContent == 'Código'){
+        anchor.click();
+        return;
+      }
+    })
   })
 
   console.log('%c⧭', 'color: #0088cc', getExcerciseInfo, allLinks[randomNumOfExercise]);
@@ -37,4 +55,4 @@ const getEasyChallenges = async () => {
   await browser.close();
 };
 
-getEasyChallenges();
+getChallengesInfo();
